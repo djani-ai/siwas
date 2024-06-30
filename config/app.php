@@ -18,6 +18,10 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'database' => [
+    'enabled' => true,
+    // ...
+    ],
     /*
     |--------------------------------------------------------------------------
     | Application Environment

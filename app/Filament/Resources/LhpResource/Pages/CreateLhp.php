@@ -3,10 +3,7 @@
 namespace App\Filament\Resources\LhpResource\Pages;
 
 use App\Filament\Resources\LhpResource;
-use App\Models\Lhp;
 use Filament\Resources\Pages\CreateRecord;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Yaza\LaravelGoogleDriveStorage\Gdrive;
 
@@ -15,7 +12,6 @@ use function Livewire\after;
 class CreateLhp extends CreateRecord
 {
     protected static string $resource = LhpResource::class;
-
     protected function getRedirectUrl(): string
     {
     return $this->previousUrl ?? $this->getResource()::getUrl('index');
@@ -111,7 +107,7 @@ class CreateLhp extends CreateRecord
             }
         $fileName= str_replace("/", "-", $lhp->nomor);
         $templateProcessor->saveAs('DATA-FORM-A/'.$lhp->kel->name.'/'.$fileName . '.docx');
-        // Gdrive::put('DATA-FORM-A/'.$lhp->kel->name.'/'.$fileName . '.docx', public_path('DATA-FORM-A/'.$lhp->kel->name.'/'.$fileName . '.docx'));
+        Gdrive::put('DATA-FORM-A/'.$lhp->kel->name.'/'.$fileName . '.docx', public_path('DATA-FORM-A/'.$lhp->kel->name.'/'.$fileName . '.docx'));
     }
 
 }

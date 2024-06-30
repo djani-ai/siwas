@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\LhpResource\Pages;
+use App\Helpers\WordHelper;
 use App\Models\Lhp;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
@@ -11,6 +12,7 @@ use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Notifications\Notification;
+use Filament\Resources\Components\Tab;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -18,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpWord\TemplateProcessor;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Yaza\LaravelGoogleDriveStorage\Gdrive;
+use Illuminate\Database\Eloquent\Builder;
 
 class LhpResource extends Resource
 {
@@ -25,6 +28,7 @@ class LhpResource extends Resource
     protected static ?string $navigationGroup = 'Form A';
     protected static ?string $navigationLabel = 'Form A LHP';
     protected static ?string $pluralModelLabel = 'Form A';
+    protected static ?string $slug = 'form-a-lhp';
     protected static ?string $navigationIcon = 'heroicon-o-document-magnifying-glass';
 
     public static function form(Form $form): Form
@@ -197,18 +201,22 @@ class LhpResource extends Resource
                     ->icon('heroicon-m-camera')
                     ->schema([
                         Forms\Components\FileUpload::make('dok1')
+                        ->image()
                         ->label('Dokumentasi 1')
                         ->imageResizeTargetWidth('512')
                         ->optimize('jpg'),
                         Forms\Components\FileUpload::make('dok2')
+                        ->image()
                         ->label('Dokumentasi 2')
                         ->imageResizeTargetWidth('512')
                         ->optimize('jpg'),
                         Forms\Components\FileUpload::make('dok3')
+                        ->image()
                         ->label('Dokumentasi 3')
                         ->imageResizeTargetWidth('512')
                         ->optimize('jpg'),
                         Forms\Components\FileUpload::make('dok4')
+                        ->image()
                         ->label('Dokumentasi 4')
                         ->imageResizeTargetWidth('512')
                         ->optimize('jpg'),
@@ -238,27 +246,35 @@ class LhpResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('spt.nama')
                     ->label('Nomor SPT')
+                    ->limit(20)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('bentuk')
+                    ->limit(10)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tujuan')
+                    ->limit(15)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('sasaran')
+                    ->limit(15)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('waktem')
                     ->label('Waktu & Tempat Kejadian')
+                    ->wrapHeader()
+                    ->limit(20)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('uraian')
+                    ->wrapHeader()
+                    ->limit(20)
                     ->label('Uraian Kejadian')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\ImageColumn::make('dok1')
-                    ->label('Dokumentasi 1'),
+                    ->label('Doc-1'),
                 Tables\Columns\ImageColumn::make('dok2')
-                    ->label('Dokumentasi 2'),
+                    ->label('Doc-2'),
                 Tables\Columns\ImageColumn::make('dok3')
-                    ->label('Dokumentasi 3'),
+                    ->label('Doc-3'),
                 Tables\Columns\ImageColumn::make('dok4')
-                    ->label('Dokumentasi 4'),
+                    ->label('Doc-4'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -268,10 +284,15 @@ class LhpResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 ])
-            ->filters([
+                ->defaultSort('no', 'desc')
+                ->defaultPaginationPageOption(25)
+                ->searchPlaceholder('Pencarian')
+                ->striped()
+                ->filters([
                 ])
             // Header di dalam Table
                 // ->headerActions([
+
                 //     ExportAction::make()->exports([
                 //         ExcelExport::make('table')->fromTable(),
                 //         ExcelExport::make('form')->fromForm(),
@@ -318,8 +339,7 @@ class LhpResource extends Resource
                                 'tujuan' => $lhp->tujuan,
                                 'sasaran' => $lhp->sasaran,
                                 'waktem' => $lhp->waktem,
-                                // 'uraian' => $lhp->uraian,
-                                // 'uraian' => $uraian,
+                                'uraian' => $lhp->uraian,
                                 'peristiwa_pel' => $lhp->peristiwa_pel,
                                 'tem_kejadian_pel' => $lhp->tem_kejadian_pel,
                                 'wak_kejadian_pel' => $lhp->wak_kejadian_pel,
@@ -376,10 +396,23 @@ class LhpResource extends Resource
                             ->download('DATA-FORM-A/'.$lhp->kel->name.'/'.$fileName . '.docx')
                             ->deleteFileAfterSend(false);
                     }),
+
+                // TEST EXPORT
+                // Tables\Actions\Action::make('Word2')
+                // ->icon('heroicon-o-printer')
+                // ->action(function (Lhp $lhp)
+                // {
+                //     $fileName= str_replace("/", "-", $lhp->nomor);
+                //     $templatePath = ('word-template/lhp.docx');
+                //     $outputPath = ('DATA-FORM-A/'.$lhp->kel->name.'/'.$fileName . '.docx');
+                //     $outputFile = WordHelper::processWordTemplate($lhp, $templatePath, $outputPath);
+
+                //     return response()->download($outputFile);
+                // }),
                 // Save to Drive
                 Tables\Actions\Action::make('Save Drive')
                     ->icon('heroicon-o-printer')
-                    ->action(function (Lhp $lhp, array $data) {
+                    ->action(function (Lhp $lhp) {
                         $fileName= str_replace("/", "-", $lhp->nomor);
                     Gdrive::put('DATA-FORM-A/'.$lhp->kel->name.'/'.$fileName . '.docx', public_path('DATA-FORM-A/'.$lhp->kel->name.'/'.$fileName . '.docx'));
                     Notification::make()
