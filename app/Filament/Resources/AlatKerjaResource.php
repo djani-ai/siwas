@@ -93,7 +93,9 @@ class AlatKerjaResource extends Resource
             ->columns([
                 TextColumn::make('name')
                 ->label('')
-                ->description(fn (AlatKerja $record): string => $record->description, position: 'above'),
+                ->description(fn (AlatKerja $record): string => $record->description, position: 'under')
+                ->wrap()
+                ->limit(20),
             ])
             ->paginated(false)
             ->filters([
