@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -43,6 +45,12 @@ class User extends Authenticatable
     public function kec(): BelongsTo
     {
         return $this->belongsTo(Kec::class, 'kec_id');
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return str_ends_with($this->email, '@gmail.com');
+        //  && $this->hasVerifiedEmail();
     }
 
 }

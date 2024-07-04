@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AlatKerjaResource\Pages;
 use App\Models\AlatKerja;
+use EightyNine\ExcelImport\Facades\ExcelImportAction;
+// use EightyNine\ExcelImport\ExcelImportAction;
 use Filament\Tables\Actions\CreateAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -67,6 +69,7 @@ class AlatKerjaResource extends Resource
                 TextColumn::make('name')
                 ->label('Nama alat Kerja'),
                 TextColumn::make('description')
+                ->limit(20)
                 ->label('Deskripsi'),
                 TextColumn::make('link'),
                 TextColumn::make('kel.name')
