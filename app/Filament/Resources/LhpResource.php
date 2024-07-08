@@ -244,7 +244,7 @@ class LhpResource extends Resource
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Petugas')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('spt.nama')
+                Tables\Columns\TextColumn::make('spt.kode')
                     ->label('Nomor SPT')
                     ->limit(20)
                     ->sortable(),
@@ -266,7 +266,7 @@ class LhpResource extends Resource
                     ->wrapHeader()
                     ->limit(20)
                     ->label('Uraian Kejadian')
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\ImageColumn::make('dok1')
                     ->label('Doc-1'),
                 Tables\Columns\ImageColumn::make('dok2')

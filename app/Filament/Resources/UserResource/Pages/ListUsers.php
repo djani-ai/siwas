@@ -16,8 +16,8 @@ class ListUsers extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            ExcelImportAction::make()
-            ->color("primary"),
+            // ExcelImportAction::make()
+            // ->color("primary"),
             Actions\CreateAction::make(),
         ];
     }

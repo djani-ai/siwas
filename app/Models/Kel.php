@@ -16,4 +16,10 @@ class Kel extends Model
     {
         return $this->belongsTo(Kec::class, 'kec_id');
     }
+
+    public function lhps()
+    {
+        return $this->hasMany(Lhp::class, 'kel_id');
+    }
+
 }

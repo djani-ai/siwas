@@ -40,10 +40,16 @@ class User extends Authenticatable
     ];
 
 
-    public function kel(): BelongsTo
+    public function kel()
     {
         return $this->belongsTo(Kel::class, 'kel_id');
     }
+
+    public function lhps()
+    {
+        return $this->hasManyThrough(Lhp::class, Kel::class, 'id', 'kel_id', 'kel_id', 'id');
+    }
+
     public function kec(): BelongsTo
     {
         return $this->belongsTo(Kec::class, 'kec_id');
