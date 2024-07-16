@@ -37,7 +37,23 @@ class LhpResource extends Resource
         // dd($role);
         $maxValuepkd = Lhp::where('kel_id', Auth::getUser()->kel_id)->max('no')+1;
         $kodepkd = Auth::getUser()->kel->kode;
-        $noreg = '/LHP/PM.01.02/JI-11.07.' . $kodepkd . '/' . date('d/m/Y') ;
+        $bulanRomawi = [
+            1 => 'I',
+            2 => 'II',
+            3 => 'III',
+            4 => 'IV',
+            5 => 'V',
+            6 => 'VI',
+            7 => 'VII',
+            8 => 'VIII',
+            9 => 'IX',
+            10 => 'X',
+            11 => 'XI',
+            12 => 'XII'
+        ];
+        $bulan = intval(date('m')); // Mengambil bulan saat ini dan mengkonversinya menjadi integer
+        $kodebln = $bulanRomawi[$bulan] . '/' . date('Y'); // Membentuk kode bulan dengan format Romawi dan tahun
+        $noreg = '/LHP/PM.01.02/JI-11.07.' . $kodepkd . '/' . $kodebln ;
         return $form
         ->schema([
             Wizard::make([
@@ -220,7 +236,6 @@ class LhpResource extends Resource
                         ->label('Dokumentasi 4')
                         ->imageResizeTargetWidth('512')
                         ->optimize('jpg'),
-
                     ])->columns(2),
             ])->columnSpanFull()
             ->skippable()
