@@ -5,6 +5,7 @@
 /public/storage
 /storage/*.key
 /vendor
+/public/DATA-FORM-A/*
 .env
 .env.backup
 .env.production
