@@ -52,7 +52,7 @@ class LhpResource extends Resource
             12 => 'XII'
         ];
         $bulan = intval(date('m')); // Mengambil bulan saat ini dan mengkonversinya menjadi integer
-        $kodebln = $bulanRomawi[$bulan] . '/' . date('Y'); // Membentuk kode bulan dengan format Romawi dan tahun
+        $kodebln =date('d').'/'. $bulanRomawi[$bulan] . '/' . date('Y'); // Membentuk kode bulan dengan format Romawi dan tahun
         $noreg = '/LHP/PM.01.02/JI-11.07.' . $kodepkd . '/' . $kodebln ;
         return $form
         ->schema([
@@ -129,6 +129,7 @@ class LhpResource extends Resource
                                 ->label('Tanggal Pengawasan/Pelaporan')
                                 ->required(),
                             Forms\Components\Textarea::make('uraian')
+                                ->label('Uraian Singkat Hasil Pengawasan ')
                                 ->required()
                                 ->maxLength(65535)
                                 ->rows('8')
@@ -184,12 +185,15 @@ class LhpResource extends Resource
                             ->label('Barang Bukti 3')
                             ->maxLength(255),
                         Forms\Components\Textarea::make('uraian_pel')
+                            ->label('Uraian Pelanggaran')
                             ->maxLength(65535)
                             ->columnSpanFull(),
                         Forms\Components\Textarea::make('fakta_pel')
+                            ->label('Fakta & Keterangan Pelanggaran')
                             ->maxLength(65535)
                             ->columnSpanFull(),
                         Forms\Components\Textarea::make('analisa_pel')
+                            ->label('Analisa Pelanggaran')
                             ->maxLength(65535)
                             ->columnSpanFull(),
                     ])
@@ -197,19 +201,29 @@ class LhpResource extends Resource
                 Wizard\Step::make('Informasi Sengketa')
                     ->icon('heroicon-m-hand-raised')
                     ->schema([
+                        Forms\Components\TextInput::make('peserta_pemilu_seng')
+                            ->label('Peserta Pemilu Sengketa')
+                            ->maxLength(255),
                         Forms\Components\TextInput::make('tempat_seng')
+                            ->label('Tempat Kejadian Sengketa')
                             ->maxLength(255),
                         Forms\Components\TextInput::make('waktu_kejadian_seng')
+                            ->label('Waktu Kejadian Sengketa')
                             ->maxLength(255),
                         Forms\Components\TextInput::make('bentuk_seng')
+                            ->label('Bentuk Objek sengketa')
                             ->maxLength(255),
                         Forms\Components\TextInput::make('identitas_seng')
+                            ->label('Identitas Objek Sengketa')
                             ->maxLength(255),
                         Forms\Components\TextInput::make('hari_seng')
+                            ->label('Hari/tanggal Dikeluarkan')
                             ->maxLength(255),
                         Forms\Components\TextInput::make('kerugian_seng')
+                            ->label('Kerugian langsung')
                             ->maxLength(255),
                         Forms\Components\Textarea::make('uraian_seng')
+                            ->label('Uraian singkat potensi sengketa')
                             ->maxLength(65535)
                             ->columnSpanFull(),
                     ])->columns(3),

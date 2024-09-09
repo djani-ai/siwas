@@ -39,8 +39,8 @@ class CreateLhp extends CreateRecord
             list($tahun, $bulan, $tanggal) = explode("-", $lhp->tanggal_lap_seng);
             $namaBulan = $bulanIndonesia[$bulan];
             $tanggalDalamBahasaIndonesia = "$tanggal $namaBulan $tahun";
-        // $section = PhpWord
-        // Prosessing INPUT
+            // $section = PhpWord
+            // Prosessing INPUT
             $templateProcessor = new TemplateProcessor('word-template/lhp.docx');
             $templateProcessor->setValues([
                 'noreg' => $lhp->nomor,
@@ -54,7 +54,6 @@ class CreateLhp extends CreateRecord
                 'sasaran' => $lhp->sasaran,
                 'waktem' => $lhp->waktem,
                 'uraian' => $lhp->uraian,
-                // 'uraian' => $uraian,
                 'peristiwa_pel' => $lhp->peristiwa_pel,
                 'tem_kejadian_pel' => $lhp->tem_kejadian_pel,
                 'wak_kejadian_pel' => $lhp->wak_kejadian_pel,
