@@ -4,7 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\LhppResource\Pages;
 use App\Filament\Resources\LhppResource\RelationManagers;
+use App\Helpers\PDFHelper;
 use App\Models\Lhpp;
+use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Wizard;
@@ -17,6 +19,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Blade;
 
 class LhppResource extends Resource
 {
@@ -303,6 +307,21 @@ class LhppResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('pdf')
+                    ->label('PDF')
+                    ->color('success')
+                    ->icon('heroicon-s-arrow-down-tray')
+                    ->action(function (Lhpp $record)
+                    {
+                        $namafile = str_replace("/", "-", $record->nomor);
+                        return response()->streamDownload(function () use ($record) {
+                            echo Pdf::loadHtml(
+                                Blade::render('pdf', ['record' => $record])
+                            )->setPaper('folio')->save('DATA-FORM-A/' . str_replace("/", "-", $record->nomor) . '.pdf')->stream();
+                        }, $namafile . '.pdf');
+                    }),
+                    // ->save('/path-to/my_stored_file.pdf')->stream('download.pdf');
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -323,6 +342,7 @@ class LhppResource extends Resource
         return [
             'index' => Pages\ListLhpps::route('/'),
             'create' => Pages\CreateLhpp::route('/create'),
+            'view' => Pages\ViewLhpp::route('/{record}'),
             'edit' => Pages\EditLhpp::route('/{record}/edit'),
         ];
     }
