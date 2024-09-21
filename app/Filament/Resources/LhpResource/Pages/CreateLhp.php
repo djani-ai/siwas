@@ -7,7 +7,7 @@ use Filament\Resources\Pages\CreateRecord;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Yaza\LaravelGoogleDriveStorage\Gdrive;
 
-use function Livewire\after;
+// use function Livewire\after;
 
 class CreateLhp extends CreateRecord
 {
@@ -106,7 +106,7 @@ class CreateLhp extends CreateRecord
             }
         $fileName= str_replace("/", "-", $lhp->nomor);
         $templateProcessor->saveAs('DATA-FORM-A/'.$lhp->kel->name.'/'.$fileName . '.docx');
-        Gdrive::put('DATA-FORM-A/'.$lhp->kel->name.'/'.$fileName . '.docx', public_path('DATA-FORM-A/'.$lhp->kel->name.'/'.$fileName . '.docx'));
+        // Gdrive::put('DATA-FORM-A/'.$lhp->kel->name.'/'.$fileName . '.docx', public_path('DATA-FORM-A/'.$lhp->kel->name.'/'.$fileName . '.docx'));
     }
 
 }
