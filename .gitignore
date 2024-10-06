@@ -3,9 +3,10 @@
 /public/build
 /public/hot
 /public/storage
+/public/.htaccess
+/public/DATA-FORM-A/*
 /storage/*.key
 /vendor
-/public/DATA-FORM-A/*
 .env
 .env.backup
 .env.production

@@ -438,7 +438,7 @@ class LhpResource extends Resource
                             return response()->stream(function () use ($record) {
                                 // Menggunakan DOMPDF untuk memuat HTML dan menghasilkan PDF
                                 $pdf = Pdf::loadHtml(
-                                    Blade::render('pdflhp', ['record' => $record])
+                                    Blade::render('cetakpdflhp', ['record' => $record])
                                 )->setPaper('Folio');
                                 // Render PDF ke output
                                 echo $pdf->output();

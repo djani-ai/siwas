@@ -3,6 +3,7 @@
         {{ $this->infolist }}
     @else
         @include('pdflhp')
+        @include('ttd-dok-view')
     @endif
     @if (count($relationManagers = $this->getRelationManagers()))
         <x-filament-panels::resources.relation-managers :active-manager="$this->activeRelationManager" :managers="$relationManagers" :owner-record="$record"
