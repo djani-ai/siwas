@@ -39,7 +39,7 @@ class AdminPanelProvider extends PanelProvider
                 'Data',
                 'Master Data'
             ])
-            ->favicon(asset('images/favicon.png'))
+            ->favicon(asset('image/icon-wasra.png'))
             ->sidebarCollapsibleOnDesktop()
             ->font('Poppins')
             ->brandName('Siwas Lurr !!!')
