@@ -1,6 +1,8 @@
 # SIWASBRO
+
 APLIKASI SIWASBRO PEMBUATAN FORM A
 Laravel - Filament
 
-- Composer install
-- 
+-   Composer install
+-   php artisan storage:link
+-   php artisan key:generate
