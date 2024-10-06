@@ -3,7 +3,7 @@
 /public/build
 /public/hot
 /public/storage
-/public/.htaccess
+public/.htaccess
 /public/DATA-FORM-A/*
 /storage/*.key
 /vendor

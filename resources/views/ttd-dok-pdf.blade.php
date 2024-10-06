@@ -1,7 +1,7 @@
 {{-- Tanda Tangan --}}
 <table class="footer" width="100%" style="table-layout: fixed;">
     <tr>
-        <td>Brondong, {{ $record->tanggal_lap_seng }}</td>
+        <td>Brondong, {{ date('d F Y', strtotime($record->tanggal_lap_seng)) }}</td>
     </tr>
     <tr>
         <td><img width="250px" src={{ 'storage/' . $record->user->ttd }} alt="ttd"></td>
