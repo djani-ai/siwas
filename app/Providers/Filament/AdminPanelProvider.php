@@ -36,10 +36,10 @@ class AdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 'Alat Kerja',
                 'Form A',
-                // 'Form A Panwas',
                 'Data',
                 'Master Data'
             ])
+            ->favicon(asset('images/favicon.png'))
             ->sidebarCollapsibleOnDesktop()
             ->font('Poppins')
             ->brandName('Siwas Lurr !!!')
