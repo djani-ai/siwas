@@ -31,9 +31,10 @@ class LhppResource extends Resource
     protected static ?string $slug = 'form-a-lhpp';
     protected static ?string $navigationIcon = 'heroicon-o-document-magnifying-glass';
 
+
     public static function form(Form $form): Form
     {
-        $maxno = Lhpp::max('no')+1;
+        $maxno = Lhpp::max('no') + 1;
         $bulanRomawi = [
             1 => 'I',
             2 => 'II',
@@ -49,81 +50,82 @@ class LhppResource extends Resource
             12 => 'XII'
         ];
         $bulan = intval(date('m')); // Mengambil bulan saat ini dan mengkonversinya menjadi integer
-        $kodebln =date('d').'/'. $bulanRomawi[$bulan] . '/' . date('Y'); // Membentuk kode bulan dengan format Romawi dan tahun
-        $noreg = '/LHP/PM.01.02/JI-11.07.'.'/' . $kodebln ;
+        $kodebln = date('d') . '/' . $bulanRomawi[$bulan] . '/' . date('Y'); // Membentuk kode bulan dengan format Romawi dan tahun
+        $noreg = '/LHP/PM.01.02/JI-11.07.' . '/' . $kodebln;
         // dd($maxno);
         return $form
             ->schema([
                 Wizard::make([
                     Wizard\Step::make('Uraian Pengawasan')
-                    ->icon('heroicon-m-document-magnifying-glass')
-                    ->schema([
-                        Fieldset::make('Nomor Registrasi')
+                        ->icon('heroicon-m-document-magnifying-glass')
                         ->schema([
-                            Forms\Components\TextInput::make('no')
-                                ->label('No Urut')
-                                ->default($maxno)
-                                ->live()
-                                ->afterStateUpdated(fn (Set $set, ?int $state) => $set('nomor', str_pad($state, 3, '0', STR_PAD_LEFT) . $noreg))
-                                ->numeric(),
+                            Fieldset::make('Nomor Registrasi')
+                                ->schema([
+                                    Forms\Components\TextInput::make('no')
+                                        ->label('No Urut')
+                                        ->default($maxno)
+                                        ->live()
+                                        ->afterStateUpdated(fn(Set $set, ?int $state) => $set('nomor', str_pad($state, 3, '0', STR_PAD_LEFT) . $noreg))
+                                        ->numeric(),
 
-                            Forms\Components\TextInput::make('nomor')
-                                ->label('Nomor Surat Form A')
-                                ->default(fn (Get $get) => (str_pad($get('no'), 3, '0', STR_PAD_LEFT) . $noreg))
-                                ->required()
-                                ->maxLength(255),
+                                    Forms\Components\TextInput::make('nomor')
+                                        ->label('Nomor Surat Form A')
+                                        ->default(fn(Get $get) => (str_pad($get('no'), 3, '0', STR_PAD_LEFT) . $noreg))
+                                        ->required()
+                                        ->maxLength(255),
                                 ]),
-                        Fieldset::make('Uraian')
-                        ->schema([
-                            Forms\Components\Select::make('pelaksana')
-                                ->label('Nama Petugas Pengawasan')
-                                ->options([
-                                    'MOH. SYIFAUN' => 'MOH. SYIFAUN',
-                                    'MOH. MARZUQI' => 'MOH. MARZUQI',
-                                    'YODI KURNIAWAN' => 'YODI KURNIAWAN',
-                                ])
-                                ->required()
-                                ->selectablePlaceholder(true),
-                            Forms\Components\Select::make('tahapan_id')
-                                ->required()
-                                ->relationship('tahapan', 'name'),
-                            Forms\Components\TextInput::make('spt')
-                                ->label('Surat Perintah Tugas')
-                                ->required(),
-                            Forms\Components\Select::make('bentuk')
-                                ->label('Bentuk Pengawasan')
-                                ->options([
-                                    'Pengawasan Langsung' => 'Pengawasan Langsung',
-                                    'Pengawasan Tidak Langsung' => 'Pengawasan Tidak Langsung'])
-                                ->required(),
-                            Forms\Components\TextInput::make('tujuan')
-                                ->label('Tujuan')
-                                ->required()
-                                ->maxLength(255),
-                            Forms\Components\TextInput::make('sasaran')
-                                ->label('Sasaran')
-                                ->required()
-                                ->maxLength(255),
-                            Forms\Components\TextInput::make('waktem')
-                                ->label('Waktu & Tempat Pelaksanaan')
-                                ->columnSpanFull()
-                                ->required()
-                                ->maxLength(255),
-                            Forms\Components\RichEditor::make('uraian')
-                                ->label('Uraian Hasil Pengawasan')
-                                ->required()
-                                ->maxLength(65535)
-                                ->columnSpanFull(),
-                            Forms\Components\Toggle::make('pelanggaran')
-                                ->label('Pelanggaran ?')
-                                ->required(),
-                            Forms\Components\Toggle::make('sengketa')
-                                ->label('Sengketa?')
-                                ->required(),
-                            ]),
+                            Fieldset::make('Uraian')
+                                ->schema([
+                                    Forms\Components\Select::make('pelaksana')
+                                        ->label('Nama Petugas Pengawasan')
+                                        ->options([
+                                            'MOH. SYIFAUN' => 'MOH. SYIFAUN',
+                                            'MOH. MARZUQI' => 'MOH. MARZUQI',
+                                            'YODI KURNIAWAN' => 'YODI KURNIAWAN',
+                                        ])
+                                        ->required()
+                                        ->selectablePlaceholder(true),
+                                    Forms\Components\Select::make('tahapan_id')
+                                        ->required()
+                                        ->relationship('tahapan', 'name'),
+                                    Forms\Components\TextInput::make('spt')
+                                        ->label('Surat Perintah Tugas')
+                                        ->required(),
+                                    Forms\Components\Select::make('bentuk')
+                                        ->label('Bentuk Pengawasan')
+                                        ->options([
+                                            'Pengawasan Langsung' => 'Pengawasan Langsung',
+                                            'Pengawasan Tidak Langsung' => 'Pengawasan Tidak Langsung'
+                                        ])
+                                        ->required(),
+                                    Forms\Components\TextInput::make('tujuan')
+                                        ->label('Tujuan')
+                                        ->required()
+                                        ->maxLength(255),
+                                    Forms\Components\TextInput::make('sasaran')
+                                        ->label('Sasaran')
+                                        ->required()
+                                        ->maxLength(255),
+                                    Forms\Components\TextInput::make('waktem')
+                                        ->label('Waktu & Tempat Pelaksanaan')
+                                        ->columnSpanFull()
+                                        ->required()
+                                        ->maxLength(255),
+                                    Forms\Components\RichEditor::make('uraian')
+                                        ->label('Uraian Hasil Pengawasan')
+                                        ->required()
+                                        ->maxLength(65535)
+                                        ->columnSpanFull(),
+                                    Forms\Components\Toggle::make('pelanggaran')
+                                        ->label('Pelanggaran ?')
+                                        ->required(),
+                                    Forms\Components\Toggle::make('sengketa')
+                                        ->label('Sengketa?')
+                                        ->required(),
+                                ]),
                         ]),
 
-                        Wizard\Step::make('Dugaan Pelanggaran')
+                    Wizard\Step::make('Dugaan Pelanggaran')
                         ->icon('heroicon-m-bug-ant')
                         ->schema([
                             Forms\Components\TextInput::make('peristiwa_pel')
@@ -218,28 +220,28 @@ class LhppResource extends Resource
                         ->icon('heroicon-m-camera')
                         ->schema([
                             Forms\Components\FileUpload::make('dok1')
-                            ->image()
-                            ->label('Dokumentasi 1')
-                            ->imageResizeTargetWidth('512')
-                            ->optimize('jpg'),
+                                ->image()
+                                ->label('Dokumentasi 1')
+                                ->imageResizeTargetWidth('512')
+                                ->optimize('jpg'),
                             Forms\Components\FileUpload::make('dok2')
-                            ->image()
-                            ->label('Dokumentasi 2')
-                            ->imageResizeTargetWidth('512')
-                            ->optimize('jpg'),
+                                ->image()
+                                ->label('Dokumentasi 2')
+                                ->imageResizeTargetWidth('512')
+                                ->optimize('jpg'),
                             Forms\Components\FileUpload::make('dok3')
-                            ->image()
-                            ->label('Dokumentasi 3')
-                            ->imageResizeTargetWidth('512')
-                            ->optimize('jpg'),
+                                ->image()
+                                ->label('Dokumentasi 3')
+                                ->imageResizeTargetWidth('512')
+                                ->optimize('jpg'),
                             Forms\Components\FileUpload::make('dok4')
-                            ->image()
-                            ->label('Dokumentasi 4')
-                            ->imageResizeTargetWidth('512')
-                            ->optimize('jpg'),
+                                ->image()
+                                ->label('Dokumentasi 4')
+                                ->imageResizeTargetWidth('512')
+                                ->optimize('jpg'),
                         ])->columns(2),
                 ])->columnSpanFull()
-                ->skippable()
+                    ->skippable()
             ]);
     }
 
@@ -295,33 +297,36 @@ class LhppResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                ])
-                ->defaultSort('no', 'desc')
-                ->defaultPaginationPageOption(25)
-                ->searchPlaceholder('Pencarian')
-                ->striped()
-                ->filters([
             ])
+            ->defaultSort('no', 'desc')
+            ->defaultPaginationPageOption(25)
+            ->searchPlaceholder('Pencarian')
+            ->striped()
+            ->filters([])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\Action::make('pdf')
                     ->label('PDF')
                     ->color('success')
                     ->icon('heroicon-s-arrow-down-tray')
-                    ->action(function (Lhpp $record)
-                    {
+                    ->action(function (Lhpp $record) {
                         $namafile = str_replace("/", "-", $record->nomor);
-                        return response()->streamDownload(function () use ($record) {
-                            echo Pdf::loadHtml(
-                                Blade::render('pdf', ['record' => $record])
-                            )->setPaper('folio')->save('DATA-FORM-A/' . str_replace("/", "-", $record->nomor) . '.pdf')->stream();
-                        }, $namafile . '.pdf');
+                        return response()->stream(function () use ($record) {
+                            // Menggunakan DOMPDF untuk memuat HTML dan menghasilkan PDF
+                            $pdf = Pdf::loadHtml(
+                                Blade::render('pdflhpp', ['record' => $record])
+                            )->setPaper('Folio');
+                            // Render PDF ke output
+                            echo $pdf->output();
+                        }, 200, [
+                            'Content-Type' => 'application/pdf',
+                            'Content-Disposition' => 'inline; filename="' . $namafile . '.pdf"',
+                        ]);
                     }),
-                    // ->save('/path-to/my_stored_file.pdf')->stream('download.pdf');
-
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -25,6 +25,7 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
+            // ->topNavigation()
             ->id('admin')
             ->path('')
             ->login()
@@ -35,6 +36,7 @@ class AdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 'Alat Kerja',
                 'Form A',
+                // 'Form A Panwas',
                 'Data',
                 'Master Data'
             ])
@@ -71,7 +73,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make()
-                // FilamentShieldPlugin::make()
+                    // FilamentShieldPlugin::make()
                     ->gridColumns([
                         'default' => 1,
                         'sm' => 2,
@@ -89,6 +91,6 @@ class AdminPanelProvider extends PanelProvider
                     ]),
             ])
             ->spa()
-            ;
+        ;
     }
 }

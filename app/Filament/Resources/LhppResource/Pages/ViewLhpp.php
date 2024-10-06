@@ -9,4 +9,5 @@ use Filament\Resources\Pages\ViewRecord;
 class ViewLhpp extends ViewRecord
 {
     protected static string $resource = LhppResource::class;
+    protected static string $view = 'filament.resources.viewlhpp';
 }

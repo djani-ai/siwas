@@ -13,6 +13,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -61,56 +62,81 @@ class AlatKerjaResource extends Resource
         $role = auth()->user()->roles->pluck('id');
         if (($role->contains(1))) {
             return $table
-            ->headerActions([
-                CreateAction::make('New')])
-            ->columns([
-                IconColumn::make('icon')
-                ->label('icon'),
-                TextColumn::make('name')
-                ->label('Nama alat Kerja'),
-                TextColumn::make('description')
-                ->limit(20)
-                ->label('Deskripsi'),
-                TextColumn::make('link'),
-                TextColumn::make('kel.name')
-                ->label('Desa/Kelurahan'),
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('Hajar')
-                ->icon('heroicon-o-cursor-arrow-ripple')
-                ->url(fn (AlatKerja $record): string => $record->link)
-                ->openUrlInNewTab(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+                ->headerActions([
+                    CreateAction::make('New')
+                ])
+                ->columns([
+                    Stack::make([
+                        IconColumn::make('icon')
+                            ->label('icon'),
+                        // ->icon(fn(string $state): string => match ($state) {
+                        //     // 'heroicon-o-check-circle',
+                        //     'draft' => 'heroicon-o-pencil',
+                        //     //     'reviewing' => 'heroicon-o-clock',
+                        //     //     'published' => 'heroicon-o-check-circle',
+                        // }),
+                        TextColumn::make('name')
+                            ->label('Nama alat Kerja'),
+                        TextColumn::make('description')
+                            ->limit(20)
+                            ->label('Deskripsi'),
+                        // TextColumn::make('link'),
+                        TextColumn::make('kel.name')
+                            ->label('Desa/Kelurahan'),
+                    ]),
+                ])
+                ->contentGrid([
+                    'md' => 2,
+                    'xl' => 3,
+                ])
+                // ->columns([
+                //     IconColumn::make('icon')
+                //     ->label('icon'),
+                //     TextColumn::make('name')
+                //     ->label('Nama alat Kerja'),
+                //     TextColumn::make('description')
+                //     ->limit(20)
+                //     ->label('Deskripsi'),
+                //     TextColumn::make('link'),
+                //     TextColumn::make('kel.name')
+                //     ->label('Desa/Kelurahan'),
+                // ])
+                ->filters([
+                    //
+                ])
+                ->actions([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\Action::make('Hajar')
+                        ->icon('heroicon-o-cursor-arrow-ripple')
+                        ->url(fn(AlatKerja $record): string => $record->link)
+                        ->openUrlInNewTab(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
+                ->bulkActions([
+                    Tables\Actions\BulkActionGroup::make([
+                        Tables\Actions\DeleteBulkAction::make(),
+                    ]),
+                ]);
         } else {
             return $table
-            ->columns([
-                TextColumn::make('name')
-                ->label('')
-                ->description(fn (AlatKerja $record): string => $record->description, position: 'under')
-                ->wrap()
-                ->limit(20),
-            ])
-            ->paginated(false)
-            ->filters([
-                //
-            ])
-            ->actions([
-                Tables\Actions\Action::make('Hajar')
-                ->icon('heroicon-o-cursor-arrow-ripple')
-                ->url(fn (AlatKerja $record): string => $record->link)
-                ->openUrlInNewTab(),
-            ])
-            ->recordUrl(fn (AlatKerja $record): string => $record->link)
+                ->columns([
+                    TextColumn::make('name')
+                        ->label('')
+                        ->description(fn(AlatKerja $record): string => $record->description, position: 'under')
+                        ->wrap()
+                        ->limit(20),
+                ])
+                ->paginated(false)
+                ->filters([
+                    //
+                ])
+                ->actions([
+                    Tables\Actions\Action::make('Hajar')
+                        ->icon('heroicon-o-cursor-arrow-ripple')
+                        ->url(fn(AlatKerja $record): string => $record->link)
+                        ->openUrlInNewTab(),
+                ])
+                ->recordUrl(fn(AlatKerja $record): string => $record->link)
             ;
         }
     }
