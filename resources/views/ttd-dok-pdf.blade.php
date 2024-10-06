@@ -30,11 +30,17 @@
         <br><br><br>
         <tr>
             <td><img width="300px" src={{ 'storage/' . $record->dok1 }} alt="ttd"></td>
-            <td><img width="300px" src={{ 'storage/' . $record->dok2 }} alt="ttd"></td>
+            @if ($record->dok2)
+                <td><img width="300px" src={{ 'storage/' . $record->dok2 }} alt="ttd"></td>
+            @endif
         </tr>
         <tr>
-            <td><img width="300px" src={{ 'storage/' . $record->dok3 }} alt="ttd"></td>
-            <td><img width="300px" src={{ 'storage/' . $record->dok4 }} alt="ttd"></td>
+            @if ($record->dok3)
+                <td><img width="300px" src={{ 'storage/' . $record->dok3 }} alt="ttd"></td>
+            @endif
+            @if ($record->dok4)
+                <td><img width="300px" src={{ 'storage/' . $record->dok4 }} alt="ttd"></td>
+            @endif
         </tr>
     </table>
 @else

@@ -24,19 +24,20 @@
             <td clas="c50"></td>
             <td clas="c50"></td>
         </tr>
-        <br>
-        <tr>
-            <td colspan="2" class="judul">DOKUMENTASI</td>
-            <td></td>
-        </tr>
         <br><br><br>
         <tr>
             <td><img width="300px" src={{ url('storage/' . $record->dok1) }} alt="ttd"></td>
-            <td><img width="300px" src={{ url('storage/' . $record->dok2) }} alt="ttd"></td>
+            @if ($record->dok2)
+                <td><img width="300px" src={{ url('storage/' . $record->dok2) }} alt="ttd"></td>
+            @endif
         </tr>
         <tr>
-            <td><img width="300px" src={{ url('storage/' . $record->dok3) }} alt="ttd"></td>
-            <td><img width="300px" src={{ url('storage/' . $record->dok4) }} alt="ttd"></td>
+            @if ($record->dok3)
+                <td><img width="300px" src={{ url('storage/' . $record->dok3) }} alt="ttd"></td>
+            @endif
+            @if ($record->dok4)
+                <td><img width="300px" src={{ url('storage/' . $record->dok4) }} alt="ttd"></td>
+            @endif
         </tr>
     </table>
 @else
