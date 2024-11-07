@@ -482,7 +482,7 @@ class LhpResource extends Resource
                             }
 
                             // Buat file ZIP dari semua PDF yang ada di temporary directory
-                            $zipFilename = 'bulk-download-' . now()->format('Y-m-d_His') . '.zip';
+                            $zipFilename = 'FORM-A-' . now()->format('Y-m-d_His') . '.zip';
                             $zipFilePath = storage_path('app/' . $zipFilename);
 
                             $zip = new ZipArchive();
