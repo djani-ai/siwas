@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\LhpResource\Pages;
-use App\Helpers\WordHelper;
 use App\Models\Lhp;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Forms;
@@ -12,18 +11,19 @@ use Filament\Forms\Components\Wizard;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
-use Filament\Notifications\Notification;
-use Filament\Resources\Components\Tab;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpWord\TemplateProcessor;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
-use Yaza\LaravelGoogleDriveStorage\Gdrive;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Blade;
+use App\Helpers\PdfHelper;
+use Filament\Tables\Actions\BulkAction;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Storage;
+use ZipArchive;
 
 class LhpResource extends Resource
 {
@@ -321,7 +321,12 @@ class LhpResource extends Resource
             ->defaultPaginationPageOption(25)
             ->searchPlaceholder('Pencarian')
             ->striped()
-            ->filters([])
+            ->filters([
+                SelectFilter::make('Tahapan')
+                    ->relationship('tahapan', 'name'),
+                SelectFilter::make('Desa/Kelurahan')
+                    ->relationship('kel', 'name')
+            ])
             // Header di dalam Table
             // ->headerActions([
 
@@ -433,6 +438,10 @@ class LhpResource extends Resource
                     ->color('success')
                     ->icon('heroicon-s-arrow-down-tray')
                     ->action(
+                        // function (Lhp $record) {
+                        //     $namafile = str_replace("/", "-", $record->nomor);
+                        //     return PdfHelper::generatePdfContent('cetakpdflhp', ['record' => $record], $namafile);
+                        // }
                         function (Lhp $record) {
                             $namafile = str_replace("/", "-", $record->nomor);
                             return response()->stream(function () use ($record) {
@@ -453,6 +462,47 @@ class LhpResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     ExportBulkAction::make(),
                     Tables\Actions\DeleteBulkAction::make(),
+                    BulkAction::make('download_pdf_zip')
+                        ->label('Download PDFs as ZIP')
+                        ->color('success')
+                        ->icon('heroicon-s-arrow-down-tray')
+                        ->action(function (Collection $records) {
+                            // Tentukan direktori temporary untuk menyimpan file PDF
+                            $tempDir = storage_path('app/temp_pdfs');
+                            Storage::makeDirectory('temp_pdfs');
+
+                            // Buat PDF untuk setiap record dan simpan di temporary directory
+                            foreach ($records as $record) {
+                                $filename = str_replace("/", "-", $record->nomor) . '.pdf';
+                                $filePath = $tempDir . '/' . $filename;
+
+                                // Generate PDF content and save to file
+                                $pdfContent = PdfHelper::generatePdfContent('cetakpdflhp', ['record' => $record]);
+                                file_put_contents($filePath, $pdfContent);
+                            }
+
+                            // Buat file ZIP dari semua PDF yang ada di temporary directory
+                            $zipFilename = 'bulk-download-' . now()->format('Y-m-d_His') . '.zip';
+                            $zipFilePath = storage_path('app/' . $zipFilename);
+
+                            $zip = new ZipArchive();
+                            if ($zip->open($zipFilePath, ZipArchive::CREATE) === TRUE) {
+                                $files = Storage::files('temp_pdfs');
+                                foreach ($files as $file) {
+                                    $zip->addFile(storage_path('app/' . $file), basename($file));
+                                }
+                                $zip->close();
+                            }
+
+                            // Hapus semua file PDF di direktori temporary
+                            Storage::deleteDirectory('temp_pdfs');
+
+                            // Kirim file ZIP ke pengguna
+                            return response()->download($zipFilePath)->deleteFileAfterSend(true);
+                        })
+                        ->deselectRecordsAfterCompletion()
+                        ->requiresConfirmation(),
+
                 ]),
             ]);
     }
