@@ -15,13 +15,18 @@ use Filament\Tables;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
+
 
 
 class AlatKerjaResource extends Resource
 {
     protected static ?string $model = AlatKerja::class;
     protected static ?string $label = "Alat Kerja";
+    protected static ?int $navigationSort = 2;
     protected static ?string $navigationGroup = 'Alat Kerja';
     protected static ?string $navigationLabel = 'Alat Kerja';
     protected static ?string $pluralModelLabel = 'Alat Kerja';
@@ -52,6 +57,10 @@ class AlatKerjaResource extends Resource
                     ->relationship('kel', 'name')
                     ->label('Desa')
                     ->required(),
+                Select::make('tps_id')
+                    ->relationship('tps', 'name')
+                    ->label('TPS')
+                    ->required(),
             ]);
     }
 
@@ -62,9 +71,9 @@ class AlatKerjaResource extends Resource
         $role = auth()->user()->roles->pluck('id');
         if (($role->contains(1))) {
             return $table
-                ->headerActions([
-                    CreateAction::make('New')
-                ])
+                // ->headerActions([
+                //     CreateAction::make('New')
+                // ])
                 ->columns([
                     Stack::make([
                         IconColumn::make('icon')
@@ -83,6 +92,8 @@ class AlatKerjaResource extends Resource
                         // TextColumn::make('link'),
                         TextColumn::make('kel.name')
                             ->label('Desa/Kelurahan'),
+                        TextColumn::make('tps.name')
+                            ->label('TPS'),
                     ]),
                 ])
                 ->contentGrid([
@@ -102,7 +113,10 @@ class AlatKerjaResource extends Resource
                 //     ->label('Desa/Kelurahan'),
                 // ])
                 ->filters([
-                    //
+                    SelectFilter::make('TPS')
+                        ->relationship('tps', 'name'),
+                    SelectFilter::make('Desa/Kelurahan')
+                        ->relationship('kel', 'name')
                 ])
                 ->actions([
                     Tables\Actions\EditAction::make(),
@@ -118,7 +132,10 @@ class AlatKerjaResource extends Resource
                     ]),
                 ]);
         } else {
+            $kel = Auth::getUser()->kel_id;
             return $table
+                ->reorderable('sort')
+                ->paginatedWhileReordering()
                 ->columns([
                     TextColumn::make('name')
                         ->label('')
@@ -126,9 +143,12 @@ class AlatKerjaResource extends Resource
                         ->wrap()
                         ->limit(20),
                 ])
-                ->paginated(false)
+                ->paginated()
                 ->filters([
-                    //
+                    SelectFilter::make('TPS')
+                        ->relationship('tps', 'name', fn(Builder $query) => $query->where('kel_id', $kel)),
+                    SelectFilter::make('Desa/Kelurahan')
+                        ->relationship('kel', 'name', fn(Builder $query) => $query->where('id', $kel))
                 ])
                 ->actions([
                     Tables\Actions\Action::make('Hajar')
@@ -137,7 +157,7 @@ class AlatKerjaResource extends Resource
                         ->openUrlInNewTab(),
                 ])
                 ->recordUrl(fn(AlatKerja $record): string => $record->link)
-            ;
+                ->defaultSort('sort');
         }
     }
 

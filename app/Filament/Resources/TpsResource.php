@@ -17,14 +17,14 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class TpsResource extends Resource
 {
     protected static ?string $model = Tps::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    protected static ?string $navigationGroup = 'Master Data';
+    protected static ?string $navigationIcon = 'heroicon-o-swatch';
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('Nama TPS')
+                Forms\Components\TextInput::make('name')
+                    ->label('Nama TPS')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('kel_id')
@@ -42,7 +42,8 @@ class TpsResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('Nama TPS')
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nama TPS')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kel.name')
                     ->label('Desa/Kel')
@@ -60,11 +61,13 @@ class TpsResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                SelectFilter::make('user')
-                ->relationship('kel', 'name')
+                SelectFilter::make('Desa/Kel')
+                    ->relationship('kel', 'name')
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->label('Hapus')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

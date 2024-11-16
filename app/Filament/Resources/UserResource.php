@@ -51,6 +51,9 @@ class UserResource extends Resource
                 Forms\Components\Select::make('kel_id')
                     ->label('Desa/Kelurahan')
                     ->relationship('kel', 'name'),
+                Forms\Components\Select::make('tps_id')
+                    ->label('TPS')
+                    ->relationship('tps', 'name'),
                 Forms\Components\Select::make('roles')
                     ->label('Jabatan')
                     ->relationship('roles', 'name'),
@@ -73,6 +76,10 @@ class UserResource extends Resource
                 Tables\Columns\ImageColumn::make('ttd'),
                 Tables\Columns\TextColumn::make('alamat')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('tps.name')
+                    ->label('TPS')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('kel.name')
                     ->label('Desa/Kel')
                     ->numeric()
@@ -99,9 +106,10 @@ class UserResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                SelectFilter::make('user')
-                ->relationship('kel', 'name')
-                ->indicator('user','kel_id')
+                SelectFilter::make('Jabatan')
+                    ->relationship('roles', 'name'),
+                SelectFilter::make('Desa/Kelurahan')
+                    ->relationship('kel', 'name')
             ])
             ->actions([
                 Tables\Actions\ReplicateAction::make(),
@@ -131,5 +139,4 @@ class UserResource extends Resource
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
-
 }

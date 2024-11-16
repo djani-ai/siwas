@@ -22,4 +22,8 @@ class Kel extends Model
         return $this->hasMany(Lhp::class, 'kel_id');
     }
 
+    public function tps()
+    {
+        return $this->hasMany(Tps::class);
+    }
 }

@@ -21,14 +21,19 @@ class AlatKerja extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+    public function tps(): BelongsTo
+    {
+        return $this->belongsTo(Tps::class, 'tps_id');
+    }
     public static function query(): EloquentBuilder
     {
         $role = auth()->user()->roles->pluck('id');
         if (($role->contains(2))) {
             return parent::query()->where('kel_id', auth()->user()->kel_id);
+        } else if (($role->contains(4))) {
+            return parent::query()->where('tps_id', auth()->user()->tps_id);
         } else {
             return parent::query();
         }
     }
 }
-

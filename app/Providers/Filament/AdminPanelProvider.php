@@ -18,6 +18,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -55,8 +56,8 @@ class AdminPanelProvider extends PanelProvider
                 // Widgets\AccountWidget::class,
                 // Widgets\FilamentInfoWidget::class,
             ])
-            ->databaseNotifications()
-            ->databaseNotificationsPolling('5s')
+            // ->databaseNotifications()
+            // ->databaseNotificationsPolling('5s')
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -73,7 +74,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make()
-                    // FilamentShieldPlugin::make()
+
                     ->gridColumns([
                         'default' => 1,
                         'sm' => 2,
@@ -89,6 +90,7 @@ class AdminPanelProvider extends PanelProvider
                         'default' => 1,
                         'sm' => 2,
                     ]),
+
             ])
             ->spa()
         ;

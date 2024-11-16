@@ -337,9 +337,12 @@ class LhpResource extends Resource
             //     ]),
             // ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->label('Lihat'),
+                Tables\Actions\EditAction::make()
+                    ->label('Edit'),
+                Tables\Actions\DeleteAction::make()
+                    ->label('Hapus'),
                 // EXPORT
                 Tables\Actions\Action::make('Word')
                     ->icon('heroicon-o-printer')
@@ -463,7 +466,7 @@ class LhpResource extends Resource
                     ExportBulkAction::make(),
                     Tables\Actions\DeleteBulkAction::make(),
                     BulkAction::make('download_pdf_zip')
-                        ->label('Download PDFs as ZIP')
+                        ->label('Download PDF di ZIP_NO')
                         ->color('success')
                         ->icon('heroicon-s-arrow-down-tray')
                         ->action(function (Collection $records) {

@@ -19,6 +19,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     protected $fillable = [
+        'id',
         'name',
         'email',
         'password',
@@ -27,6 +28,7 @@ class User extends Authenticatable
         'kel_id',
         'image',
         'ttd',
+        'tps_id',
     ];
 
     protected $hidden = [
@@ -53,6 +55,11 @@ class User extends Authenticatable
     public function kec(): BelongsTo
     {
         return $this->belongsTo(Kec::class, 'kec_id');
+    }
+
+    public function tps(): BelongsTo
+    {
+        return $this->belongsTo(Tps::class, 'tps_id');
     }
 
     // public function canAccessPanel(Panel $panel): bool

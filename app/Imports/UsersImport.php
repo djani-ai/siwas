@@ -11,6 +11,6 @@ class UsersImport implements ToCollection
     public function collection(Collection $collection)
     {
         $user = \App\Models\User::find(1);
-        $user->assignRole('super_admin');
+        $user->assignRole('PTPS');
     }
 }

@@ -24,7 +24,7 @@ class ListLhps extends ListRecords
         return [
             CreateAction::make()
                 ->icon('heroicon-o-document')
-                ->label('New'),
+                ->label('Buat Baru'),
             // ImportAction::make('importProducts')
             //     ->icon('heroicon-o-arrow-up-tray')
             //     ->label('Import')
@@ -41,10 +41,13 @@ class ListLhps extends ListRecords
             ExportAction::make()->exports([
                 ExcelExport::make()
                     ->askForFilename('Nama Desa')
-                    ->withFilename(fn ($filename ) => 'Rekap Form A-' . $filename)
+                    ->withFilename(fn($filename) => 'Rekap Form A-' . $filename)
                     ->fromTable()
                     ->except([
-                        'dok1', 'dok2', 'dok3', 'dok4'
+                        'dok1',
+                        'dok2',
+                        'dok3',
+                        'dok4'
                     ]),
             ])
         ];
