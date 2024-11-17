@@ -30,9 +30,28 @@ class InfoResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\RichEditor::make('description')
+                    ->toolbarButtons([
+                        'attachFiles',
+                        'blockquote',
+                        'bold',
+                        'bulletList',
+                        'codeBlock',
+                        'h2',
+                        'h3',
+                        'italic',
+                        'link',
+                        'orderedList',
+                        'redo',
+                        'strike',
+                        'underline',
+                        'undo',
+                    ])
                     ->label('Deskripsi')
+                    ->fileAttachmentsDisk('public') // Disk untuk menyimpan file
+                    ->fileAttachmentsVisibility('public') // Akses file publik
+                    ->fileAttachmentsDirectory('/attachFiles') // Direktori penyimpanan file
                     ->required()
-                    ->maxLength(65535)
+                    // ->maxLength(65535)
                     ->columnSpanFull(),
             ]);
     }
