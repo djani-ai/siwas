@@ -30,29 +30,26 @@ class InfoResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\RichEditor::make('description')
-                    ->toolbarButtons([
-                        'attachFiles',
-                        'blockquote',
-                        'bold',
-                        'bulletList',
-                        'codeBlock',
-                        'h2',
-                        'h3',
-                        'italic',
-                        'link',
-                        'orderedList',
-                        'redo',
-                        'strike',
-                        'underline',
-                        'undo',
-                    ])
-                    ->label('Deskripsi')
-                    ->fileAttachmentsDisk('public') // Disk untuk menyimpan file
-                    ->fileAttachmentsVisibility('public') // Akses file publik
-                    ->fileAttachmentsDirectory('/attachFiles') // Direktori penyimpanan file
-                    ->required()
-                    // ->maxLength(65535)
+                    // ->toolbarButtons([
+                    //     'bold',
+                    //     'italic',
+                    //     'link',
+                    //     'bulletList',
+                    //     'orderedList',
+                    //     'image', // Menambahkan tombol upload gambar
+                    // ])
+                    ->fileAttachmentsDisk('public2') // Disk untuk menyimpan file
+                    // ->fileAttachmentsVisibility('public') // Akses file publik
+                    ->fileAttachmentsDirectory('uploads') // Direktori penyimpanan file
+                    //->fileAttachmentsRules(['image', 'max:1024']) // Validasi file (hanya gambar, max 1MB)
+                    //     ->label('Deskripsi')
+                    //     ->fileAttachmentsDisk('public') // Disk untuk menyimpan file
+                    //     ->fileAttachmentsVisibility('public') // Akses file publik
+                    //     ->fileAttachmentsDirectory('attachFiles') // Direktori penyimpanan file
+                    //     ->required()
+                    //     // ->maxLength(65535)
                     ->columnSpanFull(),
+
             ]);
     }
 
@@ -63,7 +60,9 @@ class InfoResource extends Resource
                 TextColumn::make('description')
                     ->label('')
                     ->html()
+                    // ->markdown()
                     ->wrap()
+
             ])
             ->paginated(false)
             ->filters([
