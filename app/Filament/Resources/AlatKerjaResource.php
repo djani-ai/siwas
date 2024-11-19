@@ -136,14 +136,32 @@ class AlatKerjaResource extends Resource
             return $table
                 ->reorderable('sort')
                 ->paginatedWhileReordering()
+                // ->columns([
+                //     TextColumn::make('name')
+                //         ->label('')
+                //         ->description(fn(AlatKerja $record): string => $record->description, position: 'under')
+                //         ->wrap()
+                //         ->limit(30),
+                // ])
                 ->columns([
-                    TextColumn::make('name')
-                        ->label('')
-                        ->description(fn(AlatKerja $record): string => $record->description, position: 'under')
-                        ->wrap()
-                        ->limit(30),
+                    Stack::make([
+                        // IconColumn::make('icon')
+                        //     ->label('icon'),
+                        TextColumn::make('name')
+                            ->label('Nama alat Kerja'),
+                        TextColumn::make('description')
+                            ->label('Deskripsi'),
+                        TextColumn::make('kel.name')
+                            ->label('Desa/Kelurahan'),
+                        TextColumn::make('tps.name')
+                            ->label('TPS'),
+                    ]),
                 ])
-                ->paginated()
+                ->contentGrid([
+                    'md' => 2,
+                    'xl' => 2,
+                ])
+                ->paginated(false)
                 ->filters([
                     SelectFilter::make('TPS')
                         ->relationship('tps', 'name', fn(Builder $query) => $query->where('kel_id', $kel)),
