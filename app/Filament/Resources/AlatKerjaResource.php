@@ -141,7 +141,7 @@ class AlatKerjaResource extends Resource
                         ->label('')
                         ->description(fn(AlatKerja $record): string => $record->description, position: 'under')
                         ->wrap()
-                        ->limit(20),
+                        ->limit(30),
                 ])
                 ->paginated()
                 ->filters([

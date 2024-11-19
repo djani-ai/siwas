@@ -60,9 +60,7 @@ class InfoResource extends Resource
                 TextColumn::make('description')
                     ->label('')
                     ->html()
-                    // ->markdown()
                     ->wrap()
-
             ])
             ->paginated(false)
             ->filters([

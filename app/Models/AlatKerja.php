@@ -29,7 +29,9 @@ class AlatKerja extends Model
     {
         $role = auth()->user()->roles->pluck('id');
         if (($role->contains(2))) {
-            return parent::query()->where('kel_id', auth()->user()->kel_id);
+            return parent::query()
+                ->where('kel_id', auth()->user()->kel_id)
+                ->whereNull('tps_id');
         } else if (($role->contains(4))) {
             return parent::query()->where('tps_id', auth()->user()->tps_id);
         } else {
