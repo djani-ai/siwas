@@ -42,6 +42,7 @@ class InfoResource extends Resource
         return $table
             ->reorderable('sort')
             ->paginatedWhileReordering()
+            ->defaultSort('sort')
             ->columns([
                 TextColumn::make('description')
                     ->label('')
