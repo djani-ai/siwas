@@ -30,24 +30,8 @@ class InfoResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\RichEditor::make('description')
-                    // ->toolbarButtons([
-                    //     'bold',
-                    //     'italic',
-                    //     'link',
-                    //     'bulletList',
-                    //     'orderedList',
-                    //     'image', // Menambahkan tombol upload gambar
-                    // ])
-                    ->fileAttachmentsDisk('public2') // Disk untuk menyimpan file
-                    // ->fileAttachmentsVisibility('public') // Akses file publik
-                    ->fileAttachmentsDirectory('uploads') // Direktori penyimpanan file
-                    //->fileAttachmentsRules(['image', 'max:1024']) // Validasi file (hanya gambar, max 1MB)
-                    //     ->label('Deskripsi')
-                    //     ->fileAttachmentsDisk('public') // Disk untuk menyimpan file
-                    //     ->fileAttachmentsVisibility('public') // Akses file publik
-                    //     ->fileAttachmentsDirectory('attachFiles') // Direktori penyimpanan file
-                    //     ->required()
-                    //     // ->maxLength(65535)
+                    ->fileAttachmentsDisk('public2')
+                    ->fileAttachmentsDirectory('uploads')
                     ->columnSpanFull(),
 
             ]);
@@ -56,6 +40,8 @@ class InfoResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->reorderable('sort')
+            ->paginatedWhileReordering()
             ->columns([
                 TextColumn::make('description')
                     ->label('')

@@ -71,47 +71,21 @@ class AlatKerjaResource extends Resource
         $role = auth()->user()->roles->pluck('id');
         if (($role->contains(1))) {
             return $table
-                // ->headerActions([
-                //     CreateAction::make('New')
-                // ])
                 ->columns([
-                    Stack::make([
-                        IconColumn::make('icon')
-                            ->label('icon'),
-                        // ->icon(fn(string $state): string => match ($state) {
-                        //     // 'heroicon-o-check-circle',
-                        //     'draft' => 'heroicon-o-pencil',
-                        //     //     'reviewing' => 'heroicon-o-clock',
-                        //     //     'published' => 'heroicon-o-check-circle',
-                        // }),
-                        TextColumn::make('name')
-                            ->label('Nama alat Kerja'),
-                        TextColumn::make('description')
-                            ->limit(20)
-                            ->label('Deskripsi'),
-                        // TextColumn::make('link'),
-                        TextColumn::make('kel.name')
-                            ->label('Desa/Kelurahan'),
-                        TextColumn::make('tps.name')
-                            ->label('TPS'),
-                    ]),
+                    IconColumn::make('icon')
+                        ->label('icon'),
+                    TextColumn::make('name')
+                        ->label('Nama alat Kerja'),
+                    TextColumn::make('description')
+                        ->label('Deskripsi'),
+                    TextColumn::make('link')
+                        ->limit(40)
+                        ->wrap(),
+                    TextColumn::make('kel.name')
+                        ->label('Desa/Kelurahan'),
+                    TextColumn::make('tps.name')
+                        ->label('TPS'),
                 ])
-                ->contentGrid([
-                    'md' => 2,
-                    'xl' => 3,
-                ])
-                // ->columns([
-                //     IconColumn::make('icon')
-                //     ->label('icon'),
-                //     TextColumn::make('name')
-                //     ->label('Nama alat Kerja'),
-                //     TextColumn::make('description')
-                //     ->limit(20)
-                //     ->label('Deskripsi'),
-                //     TextColumn::make('link'),
-                //     TextColumn::make('kel.name')
-                //     ->label('Desa/Kelurahan'),
-                // ])
                 ->filters([
                     SelectFilter::make('TPS')
                         ->relationship('tps', 'name'),
@@ -136,17 +110,8 @@ class AlatKerjaResource extends Resource
             return $table
                 ->reorderable('sort')
                 ->paginatedWhileReordering()
-                // ->columns([
-                //     TextColumn::make('name')
-                //         ->label('')
-                //         ->description(fn(AlatKerja $record): string => $record->description, position: 'under')
-                //         ->wrap()
-                //         ->limit(30),
-                // ])
                 ->columns([
                     Stack::make([
-                        // IconColumn::make('icon')
-                        //     ->label('icon'),
                         TextColumn::make('name')
                             ->label('Nama alat Kerja'),
                         TextColumn::make('description')
